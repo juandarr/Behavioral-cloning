@@ -21,6 +21,7 @@ with open('../data/driving_log.csv') as csvfile:
 # Separates path to images in training and validation sets
 train_samples, validation_samples = train_test_split(lines, test_size=0.2)
 
+# Generator to generate the training and validation batches when requested
 def generator(samples, batch_size=32):
     num_samples = len(samples)
     while 1: # Loop forever so the generator never terminates

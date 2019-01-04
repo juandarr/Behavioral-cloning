@@ -48,7 +48,7 @@ Before going to the network, the input data is preprocessed using a lambda layer
 
 The overall strategy for deriving a model architecture was to follow an iterative method. Initially started with a simple fully connected layer. The results were not attractive since the vehicle was turning left and right in a constant basis and the moving was far from smooth. After this, I made a transition to a LeNet like network with three convolutional layers and just one fully connected layer at the end in addition to the output. During model training, the training loss was decreasing  while validation loss changed randomly around a fixed value. In simulation testing, the car was able to drive in the straight road but could not complete the curves in several scenarios. The driving style was also far from smooth.  
 
-The best result was achieved with an architecture similar to the one recommended in the video lectures. My final model consists of a deep convolutional neural network with a set of five convolutions at the beginning and three fully connected layers in addition to the output. The first 3 convolutional layers use a filter of size 5x5, stride of 2x2 and have depths of 24, 32 and 48 respectively. The other 2 convolutional layers use a filter of 3x3, stride of 1x1 and have a depth of 64 (both). To avoid overfitting, validation sets were defined as the 20% of the training set in each epoch. Dropout layers were also used in the convolutional layers. The batch size was set to 32 and Adam optimizer was used to train the model, so the learning rate was not tuned manually (model.py line 94). The activation function RELU was used in the whole network. 
+The best result was achieved with an architecture similar to the one recommended in the video lectures. My final model consists of a deep convolutional neural network with a set of five convolutions at the beginning and three fully connected layers in addition to the output. The first 3 convolutional layers use a filter of size 5x5, stride of 2x2 and have depths of 24, 32 and 48 respectively. The other 2 convolutional layers use a filter of 3x3, stride of 1x1 and have a depth of 64 (both). To avoid overfitting, validation sets were defined as the 20% of the training set in each epoch. Dropout layers were also used in the convolutional layers. The batch size was set to 32 and Adam optimizer was used to train the model, so the learning rate was not tuned manually (model.py line 94). The activation function RELU was used in the convolutional layers. No activation function was used in the fully connected layers. 
 
 The following image shows the architecture overall architecture of the deep neural network:
 
@@ -76,11 +76,8 @@ A detailed description of dimensions, depth, filter size and more is described i
 | Dropout               | Keep prob = 0.5                             |
 | Flatten layer		| Reshapes data from 33x1x64 to 2112       				|
 | Fully connected layer (FC1) 		| inputs 2112, outputs 100       				|
-| RELU				|       									|
-| Fully connected layer (FC2)	| inputs 100, outputs 50       				|
-| RELU				|       									|
-| Fully connected layer (FC3)		| inputs 50, outputs 10       				|
-| RELU				|       									|
+| Fully connected layer (FC2)	| inputs 100, outputs 50       											|
+| Fully connected layer (FC3)		| inputs 50, outputs 10       		   									|
 | Logits				| inputs 10, outputs 1						|
 
 After training the model with the best data set collected and the final model for 20 epochs we get the following plot of the training and validation loss:
