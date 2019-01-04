@@ -83,9 +83,7 @@ model.add(Flatten())
 
 # Set of 3 fully connected layers 
 model.add(Dense(100))
-#model.add(Dropout(0.3))
 model.add(Dense(50))
-#model.add(Dropout(0.3))
 model.add(Dense(10))
 
 # Output layer
@@ -95,8 +93,6 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam')
 
 plot_model(model, to_file='model.png', show_shapes=True)
-'''
-#history_object = model.fit(X_train, y_train, verbose=1, validation_split=0.2, shuffle= True, nb_epoch = 20)
 
 # Use fit_generator to train the model
 history_object = model.fit_generator(train_generator, steps_per_epoch= \
@@ -117,4 +113,3 @@ plt.show()
 
 # Save trained model in file
 model.save('model2.h5')
-'''
