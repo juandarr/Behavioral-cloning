@@ -7,6 +7,15 @@ The steps carried out during this project are the following:
    * b. Train and validate the model with a training and validation set
 3. Test that the model successfully drives around track one without leaving the road
 
+
+My project includes the following files:
+
+* model.py containing the script to create and train the model
+* drive.py for driving the car in autonomous mode
+* model.h5 containing a trained convolution neural network 
+* README.md summarizing the results
+* video.mp4 showing the driving skills of the new algorithm
+
 [//]: # (Image References)
 
 [image1]: ./images/architecture.png "Model architecture"
@@ -16,15 +25,6 @@ The steps carried out during this project are the following:
 [image5]: ./images/recovery2.jpg "Recovery Image"
 [image6]: ./images/recovery3.jpg "Recovery Image"
 [image7]: ./images/flipped.png "Flipped Image"
-
----
-My project includes the following files:
-
-* model.py containing the script to create and train the model
-* drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
-* README.md summarizing the results
-* video.mp4 showing the driving skills of the new algorithm
 
 ## 1. Use the simulator to collect data of good driving behavior
 
@@ -74,11 +74,12 @@ A detailed description of dimensions, depth, filter size and more is described i
 | Convolution 3x3     	| 1x1 stride, 'VALID' padding, outputs 33x1x64 	|
 | RELU					|												|
 | Dropout               | Keep prob = 0.5                             |
-| Fully connected		| inputs 2112, outputs 100       				|
+| Flatten layer		| Reshapes data from 33x1x64 to 2112       				|
+| Fully connected layer (FC1) 		| inputs 2112, outputs 100       				|
 | RELU				|       									|
-| Fully connected		| inputs 100, outputs 50       				|
+| Fully connected layer (FC2)	| inputs 100, outputs 50       				|
 | RELU				|       									|
-| Fully connected		| inputs 50, outputs 10       				|
+| Fully connected layer (FC3)		| inputs 50, outputs 10       				|
 | RELU				|       									|
 | Logits				| inputs 10, outputs 1						|
 
