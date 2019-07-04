@@ -32,7 +32,10 @@ def generator(samples, batch_size=32):
             images = []
             measurements = []
             for batch_sample in batch_samples:
-                source_path = batch_sample[0]
+                source_path_center = batch_sample[0]
+                source_path_left = batch_sample[1]
+                source_path_right = batch_sample[2]
+
                 # Use windows 10 separator
                 filename =source_path.split('\\')[-1]
                 # Redefine path of each image
