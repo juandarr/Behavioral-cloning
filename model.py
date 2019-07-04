@@ -5,10 +5,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import sklearn
 
-import tensorflow as tf
-
-from tensorflow.keras.models import Model
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.layers import Flatten, Dense, Activation, Dropout, Lambda, Cropping2D, Conv2D, MaxPool2D
 from tensorflow.keras.utils import plot_model
 
@@ -62,8 +59,8 @@ def generator(samples, batch_size=10):
 
                 # Retrieve center, left and right measurements
                 measurement_center = float(batch_sample[3])
-                measurement_left = measurement_center - correction
-                measurement_right = measurement_center + correction
+                measurement_left = measurement_center + correction
+                measurement_right = measurement_center - correction
                 
                 # Append measurement to the list of measurements for center, left and right images
                 measurements.append(measurement_center)
@@ -141,4 +138,8 @@ plt.legend(['training set', 'validation set'], loc='upper right')
 plt.show()
 
 # Save trained model in file
+print('Saving model...')
+
 model.save('model2.h5')
+
+print('Mode has been saved!')
