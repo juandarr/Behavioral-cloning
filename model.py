@@ -24,6 +24,9 @@ train_samples, validation_samples = train_test_split(lines, test_size=0.2)
 # Generator to generate the training and validation batches when requested
 def generator(samples, batch_size=32):
     num_samples = len(samples)
+
+    correction = 0.2
+
     while 1: # Loop forever so the generator never terminates
         sklearn.utils.shuffle(samples)
         for offset in range(0, num_samples, batch_size):
@@ -32,28 +35,50 @@ def generator(samples, batch_size=32):
             images = []
             measurements = []
             for batch_sample in batch_samples:
+                # Retrieves path from center, left and right image
                 source_path_center = batch_sample[0]
                 source_path_left = batch_sample[1]
                 source_path_right = batch_sample[2]
 
-                # Use windows 10 separator
-                filename =source_path.split('\\')[-1]
-                # Redefine path of each image
-                current_path = '../data/IMG/' + filename
-                
-                # Read the image in current path    
-                image = mpimg.imread(current_path)
-                # Append image to the list of images
-                images.append(image)
-                measurement = float(batch_sample[3])
-                # Append measurement to the list of measurements
-                measurements.append(measurement)
+                # Use windows 10 separator - Not sure whether this will work in GNU/Linux
+                filename_center =source_path_center.split('\\')[-1]
+                filename_left =source_path_left.split('\\')[-1]
+                filename_right =source_path_right.split('\\')[-1]
 
-                # Flip the image, store the flipped image and the modified measurement
-                image_flipped = np.fliplr(image)
-                images.append(image_flipped)
-                measurement_flipped = -measurement
-                measurements.append(measurement_flipped)
+                # Redefine path of each image
+                current_path_center = '../data/IMG/' + filename_center
+                current_path_left = '../data/IMG/' + filename_left
+                current_path_right = '../data/IMG/' + filename_right
+                
+                # Read the image in current path
+                image_center = mpimg.imread(current_path_center)
+                image_left = mpimg.imread(current_path_left)
+                image_right = mpimg.imread(current_path_right)
+
+                # Append image to the list of images
+                images.append(image_center)
+                images.append(image_left)
+                images.append(image_right)
+
+                # Retrieve center, left and right measurements
+                measurement_center = float(batch_sample[3])
+                measurement_left = measurement_center - correction
+                measurement_right = measurement_center + correction
+                
+                # Append measurement to the list of measurements for center, left and right images
+                measurements.append(measurement_center)
+                measurements.append(measurement_left)
+                measurements.append(measurement_right)
+
+                # Flip the images, store the flipped image and the modified measurement
+                for image in [image_center, image_left, image_right]:
+                    image_flipped = np.fliplr(image)
+                    images.append(image_flipped)
+                
+                for measurement in [measurement_center, measurement_left, measurement_right]:
+                    measurement_flipped = -measurement
+                    measurements.append(measurement_flipped)
+
             # trim image to only see section with road
             X_train = np.array(images)
             y_train = np.array(measurements)
