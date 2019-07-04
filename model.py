@@ -5,16 +5,16 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import sklearn
 
-from keras.models import Model
-from keras.models import Sequential
-from keras.layers import Flatten, Dense, Activation, Dropout, Lambda, Cropping2D
-from keras.layers.convolutional import Conv2D
-from keras.layers.pooling import MaxPool2D
-from keras.utils import plot_model
+import tensorflow as tf
+
+from tensorflow.keras.models import Model
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Flatten, Dense, Activation, Dropout, Lambda, Cropping2D, Conv2D, MaxPool2D
+from tensorflow.keras.utils import plot_model
 
 lines = [] # Stores lines read in csv file
-with open('../data/driving_log.csv') as csvfile:
-    reader = csv.reader(csvfile) 
+with open('../training/driving_log.csv') as csvfile:
+    reader = csv.reader(csvfile)
     for line in reader:
         lines.append(line)
 
@@ -22,7 +22,7 @@ with open('../data/driving_log.csv') as csvfile:
 train_samples, validation_samples = train_test_split(lines, test_size=0.2)
 
 # Generator to generate the training and validation batches when requested
-def generator(samples, batch_size=32):
+def generator(samples, batch_size=10):
     num_samples = len(samples)
 
     correction = 0.2
@@ -40,19 +40,19 @@ def generator(samples, batch_size=32):
                 source_path_left = batch_sample[1]
                 source_path_right = batch_sample[2]
 
-                # Use windows 10 separator - Not sure whether this will work in GNU/Linux
-                filename_center =source_path_center.split('\\')[-1]
-                filename_left =source_path_left.split('\\')[-1]
-                filename_right =source_path_right.split('\\')[-1]
+                # Use windows 10 separator '\\'- Not sure whether this will work in GNU/Linux
+                filename_center =source_path_center.split('/')[-1]
+                filename_left =source_path_left.split('/')[-1]
+                filename_right =source_path_right.split('/')[-1]
 
                 # Redefine path of each image
-                current_path_center = '../data/IMG/' + filename_center
-                current_path_left = '../data/IMG/' + filename_left
-                current_path_right = '../data/IMG/' + filename_right
+                current_path_center = '../training/IMG/' + filename_center
+                current_path_left = '../training/IMG/' + filename_left
+                current_path_right = '../training/IMG/' + filename_right
                 
                 # Read the image in current path
                 image_center = mpimg.imread(current_path_center)
-                image_left = mpimg.imread(current_path_left)
+                image_left = mpimg.imread(current_path_left)    
                 image_right = mpimg.imread(current_path_right)
 
                 # Append image to the list of images
@@ -126,7 +126,7 @@ plot_model(model, to_file='model.png', show_shapes=True)
 # Use fit_generator to train the model
 history_object = model.fit_generator(train_generator, steps_per_epoch= \
             int(np.ceil(len(train_samples)/32)), validation_data=validation_generator, \
-            validation_steps=int(np.ceil(len(validation_samples)/32)), verbose= 1, nb_epoch=20)
+            validation_steps=int(np.ceil(len(validation_samples)/32)), verbose= 1, epochs=20)
 
 ### print the keys contained in the history object
 print(history_object.history.keys())
