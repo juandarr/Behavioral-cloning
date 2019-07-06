@@ -1,8 +1,13 @@
 # **Behavioral Cloning** 
 
+## Update: July 5th, 2019
+This repo has been updated to run on Python 3 and include the left and right camera images. This last addition is really useful during training and avoids the need to recover the car from the left/right lane to the center.
+
+## Steps
+
 The steps carried out during this project are the following:
 
-1. Use the simulator to collect data of good driving behavior
+1. Use the simulator to collect data of good driving behavior. 
 2. * a. Build a convolution neural network in Keras that predicts steering angles from images
    * b. Train and validate the model with a training and validation set
 3. Test that the model successfully drives around track one without leaving the road
